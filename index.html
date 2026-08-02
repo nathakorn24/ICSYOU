@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="th" data-scale="1" data-contrast="normal">
+<head>
+  <meta charset="UTF-8">
+  <!-- viewport-fit=cover : ให้เต็มจอบนมือถือที่มีติ่ง/มุมโค้ง (iPhone X ขึ้นไป)
+       ไม่ใส่ maximum-scale เพื่อให้ผู้สูงอายุยังซูมนิ้วได้ -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>FairFair Farm — เช็กราคากลางผัก-ผลไม้</title>
+  <meta name="description" content="เช็กราคามาตรฐานผัก-ผลไม้ ใช้ต่อรองกับพ่อค้าคนกลางได้ทันที ใช้งานได้แม้ไม่มีเน็ต">
+
+  <!-- ---- ทำให้ติดตั้งเป็นแอปบนมือถือได้ (PWA) ---- -->
+  <link rel="manifest" href="/manifest.webmanifest">
+  <meta name="theme-color" content="#5B7B4F">
+  <meta name="color-scheme" content="light">
+
+  <!-- iOS: ต้องใช้แท็กเฉพาะของ Apple และไอคอนต้องเป็น PNG เท่านั้น -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="FairFair Farm">
+  <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+
+  <!-- Android / Windows -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="application-name" content="FairFair Farm">
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ============ หัวเว็บ ============ -->
+  <header class="header">
+    <div class="wrap header-inner">
+      <div class="brand">
+        <span class="icon-box" data-icon="brand"></span>
+        <div>
+          <h1>FairFair Farm</h1>
+          <p class="tagline">เช็กราคากลาง ก่อนตกลงราคากับพ่อค้า</p>
+        </div>
+      </div>
+
+      <!-- ปุ่มช่วยการมองเห็น -->
+      <div class="a11y">
+        <button type="button" class="a11y-btn" id="btnTextSize">
+          <span class="a11y-ico">ก</span><span class="a11y-txt">ขยายตัวอักษร</span>
+        </button>
+        <button type="button" class="a11y-btn" id="btnContrast" aria-pressed="false">
+          <span class="a11y-ico">◐</span><span class="a11y-txt">สีเข้ม</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap main">
+
+    <!-- ============ วิธีใช้ 3 ขั้น ============ -->
+    <section class="howto">
+      <div class="howto-item">
+        <span class="howto-no">1</span>
+        <div><strong>เลือกของที่จะขาย</strong><small>พิมพ์ชื่อ หรือกดเลือกจากรายการ</small></div>
+      </div>
+      <span class="howto-arrow">→</span>
+      <div class="howto-item">
+        <span class="howto-no">2</span>
+        <div><strong>ใส่จำนวนที่มี</strong><small>เข่ง ตะกร้า หาบ กิโล ก็ได้</small></div>
+      </div>
+      <span class="howto-arrow">→</span>
+      <div class="howto-item">
+        <span class="howto-no">3</span>
+        <div><strong>ได้ราคาที่ควรขาย</strong><small>เอาไปต่อรองกับพ่อค้าได้เลย</small></div>
+      </div>
+    </section>
+
+    <!-- ============ ขั้นที่ 1-2 : กรอก ============ -->
+    <section class="card clay">
+      <h2 class="step"><span class="step-no">1</span> คุณจะขายอะไร</h2>
+
+      <div class="field">
+        <label class="label" for="cropSearch">พิมพ์ชื่อผัก หรือผลไม้</label>
+        <div class="search-row">
+          <input id="cropSearch" type="text" class="input" autocomplete="off"
+                 placeholder="เช่น มะม่วงน้ำดอกไม้">
+          <button id="btnCheck" type="button" class="btn btn-leaf">
+            <span class="icon-box" data-icon="search"></span> ค้นหา
+          </button>
+        </div>
+        <div id="suggestions" class="suggestions clay hidden"></div>
+        <div id="searchNote" class="note"></div>
+      </div>
+
+      <div class="grid-2">
+        <div class="field">
+          <label class="label" for="gradeSelect">พันธุ์ / เกรด</label>
+          <select id="gradeSelect" class="input"></select>
+        </div>
+        <div class="field">
+          <label class="label" for="amount">คุณมีเท่าไร</label>
+          <div class="amount-row">
+            <input id="amount" type="number" class="input" value="1" min="0" step="any">
+            <select id="unitSelect" class="input"></select>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ขั้นที่ 3 : การ์ดคำตอบ ============ -->
+    <section id="answerCard" class="card clay hidden">
+      <h2 class="step"><span class="step-no">2</span> ราคาที่คุณควรได้</h2>
+
+      <div class="result-head">
+        <span class="icon-box result-icon" id="resultIcon"></span>
+        <div>
+          <h3 id="resultTitle"></h3>
+          <div id="resultCode" class="meta"></div>
+        </div>
+      </div>
+
+      <!-- ราคามาตรฐาน -->
+      <div id="priceHero" class="price-hero clay-in">
+        <div class="price-label">ราคามาตรฐานล่าสุด</div>
+        <div id="priceValue" class="price-value">—</div>
+        <div id="priceAsOf" class="as-of"></div>
+        <div id="priceSource" class="price-source"></div>
+      </div>
+
+      <!-- ราคารวมของจำนวนที่กรอก -->
+      <div id="totalBox" class="total-box clay-in hidden"></div>
+
+      <!-- ปุ่มดูราคาย้อนหลัง (ผู้ใช้กดเองถ้าสนใจ) -->
+      <button id="btnHistory" type="button" class="btn btn-outline hidden">
+        <span class="icon-box" data-icon="clock"></span>
+        <span id="btnHistoryText">ดูราคาย้อนหลัง</span>
+      </button>
+
+      <div id="historyBox" class="history-box hidden"></div>
+
+      <div class="tip">
+        <span class="icon-box" data-icon="handshake"></span>
+        <div><strong>วิธีใช้ต่อรอง:</strong> ถ้าพ่อค้าให้ราคาต่ำกว่านี้
+          ยื่นมือถือให้เขาดูหน้านี้ได้เลย เป็นราคากลางที่ตรวจสอบได้</div>
+      </div>
+    </section>
+
+    <!-- ============ สินค้าที่รองรับ ============ -->
+    <section class="card clay" id="products">
+      <h2 class="plain"><span class="icon-box" data-icon="source"></span> ผัก-ผลไม้ที่เช็กราคาได้
+        <span id="prodCount" class="source-type"></span></h2>
+      <p class="help">กดที่ชื่อเพื่อดูราคาได้เลย</p>
+      <div class="cat-tabs" id="catTabs"></div>
+      <div class="prod-grid" id="prodGrid"></div>
+    </section>
+
+    <!-- ============ ที่มาของข้อมูล ============ -->
+    <section class="card clay" id="sources">
+      <h2 class="plain"><span class="icon-box" data-icon="shield"></span> ข้อมูลนี้มาจากไหน</h2>
+      <ul id="sourceList" class="source-list"></ul>
+    </section>
+
+    <!-- ============ ติดตั้งเป็นแอป (ล่างสุด) ============ -->
+    <section class="card clay install-card">
+      <h2 class="plain"><span class="icon-box" data-icon="check"></span> ติดตั้งลงมือถือ</h2>
+      <p class="help">
+        ติดตั้งแล้ว<strong>เปิดใช้ได้แม้ไม่มีสัญญาณ</strong>
+        เหมาะกับตอนอยู่ในไร่ในสวนที่เน็ตไม่ดี และมีไอคอนขึ้นหน้าจอเหมือนแอปทั่วไป
+      </p>
+
+      <button id="btnInstall" type="button" class="btn btn-mango hidden">
+        <span class="icon-box" data-icon="check"></span> ติดตั้งเป็นแอปในเครื่อง
+      </button>
+
+      <!-- ข้อความสำรอง สำหรับเครื่องที่กดปุ่มติดตั้งอัตโนมัติไม่ได้ (เช่น iPhone) -->
+      <div id="installHint" class="install-hint"></div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="wrap">
+      <strong>FairFair Farm</strong> — ต้นแบบเพื่อการนำเสนอ<br>
+      รายชื่อสินค้าจากกระทรวงพาณิชย์ · <a href="#sources">ดูที่มาของข้อมูลทั้งหมด</a>
+    </div>
+  </footer>
+
+  <!-- แถบแจ้งว่ากำลังใช้งานแบบออฟไลน์ -->
+  <div id="offlineBar" class="offline-bar hidden">
+    กำลังใช้งานแบบออฟไลน์ — ราคาที่แสดงอาจไม่ใช่ล่าสุด
+  </div>
+
+  <script src="icons.js"></script>
+  <script src="catalog.js"></script>
+  <script src="mockprices.js"></script>
+  <script src="app.js"></script>
+
+  <script>
+    /* ---- ลงทะเบียน Service Worker เพื่อให้ใช้งานออฟไลน์ได้ ----
+       ต้องเสิร์ฟผ่าน https หรือ localhost เท่านั้น (ข้อกำหนดของเบราว์เซอร์)
+       เปิดไฟล์ index.html ตรง ๆ จะไม่ทำงาน ซึ่งไม่เป็นไร เว็บยังใช้ได้ปกติ */
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/sw.js').catch(function (err) {
+          console.warn('[pwa] ลงทะเบียน service worker ไม่สำเร็จ:', err.message);
+        });
+      });
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,704 @@
+/* ============================================================
+   style.css — FairHarvest / ราคาชาวสวน
+   ------------------------------------------------------------
+   สไตล์: Claymorphism (ปุ่มดินน้ำมัน)
+     หลักการ: ทุกชิ้นใช้เงา 2 ทิศพร้อมกัน
+        - เงามืดทิ้งลงล่างขวา   -> ดันวัตถุให้ลอยขึ้น
+        - เงาสว่างที่บนซ้าย      -> เหมือนมีแสงส่องจากบนซ้าย
+        - เงาด้านใน (inset) อีก 2 ทิศ -> ทำให้ผิวดูนูนอวบ
+     บวกมุมมนใหญ่ (border-radius สูง) และ "ห้ามใช้ gradient หลากสี"
+     ใช้สีทึบล้วน ๆ เท่านั้น ความนูนมาจากเงาอย่างเดียว
+
+   ระบบสี 60-20-10-10
+     60%  #E8E4D8  เขียวมะกอกอมครีม   -> พื้นหลัง + ผิวการ์ด
+     20%  #5B7B4F  เขียวเข้มใบไม้      -> แถบหัว ปุ่มหลัก หัวข้อ
+     10%  #D97B3F  ส้มมะม่วงสุก        -> ปุ่มหลักที่ต้องกด ราคา คำเตือน
+     10%  #E0A94F  เหลืองมัสตาร์ด      -> badge ไฮไลต์ กราฟ
+
+   อ่านง่ายสำหรับผู้สูงอายุ
+     - ปุ่มปรับขนาดตัวอักษร 3 ระดับ (ปกติ / ใหญ่ / ใหญ่มาก)
+     - โหมดคอนทราสต์สูง สำหรับอ่านกลางแดด
+     - ปุ่มสูงอย่างน้อย 56px กดง่ายแม้มือเปื้อนดิน
+   ============================================================ */
+
+:root {
+  /* ---- 60% พื้นหลัง ---- */
+  --base:        #E8E4D8;
+  --surface:     #EFEBE0;
+  --surface-in:  #DFDACB;
+
+  /* ---- 20% เขียวใบไม้ ---- */
+  --leaf:        #5B7B4F;
+  --leaf-dark:   #4A6741;
+  --leaf-tint:   #D6DECD;
+
+  /* ---- 10% ส้มมะม่วงสุก ---- */
+  --mango:       #D97B3F;
+  --mango-dark:  #B65F2B;
+  --mango-tint:  #F3DCC9;
+
+  /* ---- 10% เหลืองมัสตาร์ด ---- */
+  --mustard:     #E0A94F;
+  --mustard-tint:#F6E7C6;
+
+  /* ---- ตัวหนังสือ ---- */
+  --ink:         #2E3A26;
+  --ink-soft:    #6E7565;
+
+  /* ---- เงาดินน้ำมัน ---- */
+  --sh-dark:     rgba(88, 104, 76, .26);
+  --sh-light:    rgba(255, 255, 255, .92);
+
+  --r:           30px;   /* มุมมนหลัก */
+  --r-sm:        20px;
+  --fs:          18px;   /* ขนาดตัวอักษรฐาน — ปุ่ม A+ จะมาแก้ค่านี้ */
+}
+
+/* ---- ปุ่มขยายตัวอักษร 3 ระดับ ---- */
+html[data-scale="1"] { --fs: 18px; }
+html[data-scale="2"] { --fs: 21px; }
+html[data-scale="3"] { --fs: 25px; }
+
+/* ---- โหมดคอนทราสต์สูง: ตัดเงานุ่ม เปลี่ยนเป็นขอบเข้มชัด ---- */
+html[data-contrast="high"] {
+  --base:      #FFFFFF;
+  --surface:   #FFFFFF;
+  --ink:       #000000;
+  --ink-soft:  #333333;
+  --leaf:      #1F3D14;
+  --leaf-dark: #14290D;
+  --mango:     #9A3D00;
+  --mango-dark:#7A3000;
+  --sh-dark:   rgba(0,0,0,.5);
+  --sh-light:  rgba(255,255,255,0);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--base);
+  color: var(--ink);
+  font-family: "Sarabun", "Noto Sans Thai", "IBM Plex Sans Thai", "Segoe UI", system-ui, sans-serif;
+  font-size: var(--fs);
+  line-height: 1.7;
+}
+
+.wrap { max-width: 920px; margin: 0 auto; padding: 0 18px; }
+.hidden { display: none !important; }
+
+
+/* ============================================================
+   คลาสดินน้ำมัน — ใช้ซ้ำทั้งเว็บ
+   ============================================================ */
+
+/* ผิวนูนขึ้นมา (การ์ด ปุ่ม) */
+.clay {
+  background: var(--surface);
+  border-radius: var(--r);
+  border: none;
+  box-shadow:
+    10px 10px 20px var(--sh-dark),
+    -8px -8px 18px var(--sh-light),
+    inset -5px -5px 12px rgba(88,104,76,.07),
+    inset  5px  5px 12px rgba(255,255,255,.75);
+}
+
+/* ผิวยุบลงไป (ช่องกรอก ช่องแสดงผล) */
+.clay-in {
+  background: var(--surface-in);
+  border-radius: var(--r-sm);
+  border: none;
+  box-shadow:
+    inset 6px 6px 12px rgba(88,104,76,.20),
+    inset -6px -6px 12px rgba(255,255,255,.85);
+}
+
+html[data-contrast="high"] .clay,
+html[data-contrast="high"] .clay-in {
+  border: 3px solid var(--ink);
+  box-shadow: 5px 5px 0 var(--sh-dark);
+}
+
+
+/* ============================================================
+   ไอคอน
+   ============================================================ */
+.icn { width: 1em; height: 1em; display: block; }
+.icon-box { display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+/* ไอคอนที่ผู้ใช้เอาไฟล์จาก Flaticon มาวางเอง */
+.icon-box img { width: 1em; height: 1em; object-fit: contain; display: block; }
+
+
+/* ============================================================
+   แถบหัวเว็บ
+   ============================================================ */
+.header {
+  background: var(--leaf);
+  color: #F4F1E6;
+  padding: 16px 0;
+  border-radius: 0 0 var(--r) var(--r);
+  box-shadow: 0 12px 26px rgba(74,103,65,.32);
+}
+.header-inner { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
+.brand { display: flex; align-items: center; gap: 14px; }
+.brand .icon-box {
+  width: 56px; height: 56px; font-size: 34px;
+  border-radius: 20px;
+  background: var(--leaf-dark);
+  box-shadow:
+    inset -4px -4px 10px rgba(0,0,0,.22),
+    inset  4px  4px 10px rgba(255,255,255,.16);
+}
+.header h1 { margin: 0; font-size: 1.6em; font-weight: 800; letter-spacing: -.3px; }
+.tagline { margin: 0; font-size: .8em; opacity: .85; }
+
+/* กลุ่มปุ่มช่วยการมองเห็น — มีทั้งไอคอนและคำอธิบาย ผู้สูงอายุจะได้รู้ว่าปุ่มทำอะไร */
+.a11y { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.a11y-btn {
+  display: inline-flex; align-items: center; gap: 9px;
+  height: 52px; padding: 0 18px;
+  border: none; border-radius: 16px;
+  background: var(--leaf-dark);
+  color: #F4F1E6;
+  font-family: inherit; font-weight: 700; font-size: .82em;
+  cursor: pointer;
+  box-shadow: inset -3px -3px 8px rgba(0,0,0,.24), inset 3px 3px 8px rgba(255,255,255,.14);
+}
+.a11y-ico { font-size: 1.5em; font-weight: 800; line-height: 1; }
+.a11y-btn:hover { background: #3E5636; }
+.a11y-btn:active { box-shadow: inset 5px 5px 11px rgba(0,0,0,.35); }
+.a11y-btn[aria-pressed="true"] {
+  background: var(--mustard); color: #4A3308;
+  box-shadow: inset 4px 4px 9px rgba(0,0,0,.24);
+}
+
+.badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: .78em; font-weight: 700;
+  padding: 9px 16px; border-radius: 999px;
+  background: var(--leaf-dark);
+  color: #E6EEDE;
+  box-shadow: inset -3px -3px 8px rgba(0,0,0,.22), inset 3px 3px 8px rgba(255,255,255,.14);
+}
+.badge .icon-box { font-size: 1.3em; }
+.badge-on  { background: var(--mustard); color: #4A3308; }
+
+
+/* ============================================================
+   โครงหลัก
+   ============================================================ */
+.main { padding: 22px 18px 70px; display: grid; gap: 22px; }
+.card { padding: 28px; }
+
+.notice {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 18px 22px; margin-top: 22px;
+  border-radius: var(--r-sm);
+  background: var(--mango-tint);
+  color: #7A3F14;
+  font-size: .92em;
+  box-shadow: 8px 8px 16px var(--sh-dark), -6px -6px 14px var(--sh-light);
+}
+.notice .icon-box { font-size: 1.8em; color: var(--mango-dark); }
+
+
+/* ============================================================
+   หัวข้อ
+   ============================================================ */
+.step {
+  display: flex; align-items: center; gap: 14px;
+  margin: 0 0 22px;
+  font-size: 1.2em; font-weight: 800; color: var(--leaf-dark);
+}
+.step-no {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 46px; height: 46px; flex-shrink: 0;
+  border-radius: 16px;
+  background: var(--leaf); color: #fff;
+  font-size: .95em; font-weight: 800;
+  box-shadow: 6px 6px 12px var(--sh-dark), -4px -4px 10px var(--sh-light),
+              inset -3px -3px 8px rgba(0,0,0,.16), inset 3px 3px 8px rgba(255,255,255,.22);
+}
+h2.plain { display: flex; align-items: center; gap: 12px; margin: 0 0 20px; font-size: 1.2em; font-weight: 800; color: var(--leaf-dark); }
+h2.plain .icon-box { font-size: 1.5em; color: var(--leaf); }
+
+
+/* ============================================================
+   ฟอร์ม
+   ============================================================ */
+.field { margin-bottom: 20px; }
+.label { display: block; font-size: .86em; font-weight: 700; color: var(--leaf-dark); margin-bottom: 9px; }
+
+.input {
+  width: 100%;
+  padding: 16px 20px;
+  font-family: inherit; font-size: 1em; color: var(--ink);
+  background: var(--surface-in);
+  border: none; border-radius: var(--r-sm);
+  box-shadow: inset 6px 6px 12px rgba(88,104,76,.20), inset -6px -6px 12px rgba(255,255,255,.85);
+}
+.input::placeholder { color: var(--ink-soft); opacity: .8; }
+.input:focus { outline: 3px solid var(--mustard); outline-offset: 2px; }
+html[data-contrast="high"] .input { border: 3px solid var(--ink); box-shadow: none; }
+
+select.input {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235B7B4F' stroke-width='2.4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 20px center; background-size: 13px;
+  padding-right: 46px;
+}
+
+.search-row { display: flex; gap: 12px; }
+.search-row .input { flex: 1; }
+.amount-row { display: flex; gap: 12px; }
+.amount-row input { flex: 1.1; }
+.amount-row select { flex: 1.6; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1.1fr 1.2fr; gap: 16px; }
+
+
+/* ============================================================
+   ปุ่ม
+   ============================================================ */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  min-height: 58px; padding: 15px 30px;
+  border: none; border-radius: var(--r-sm);
+  font-family: inherit; font-size: 1em; font-weight: 800; color: #fff;
+  cursor: pointer;
+  box-shadow: 8px 8px 16px var(--sh-dark), -6px -6px 14px var(--sh-light),
+              inset -4px -4px 10px rgba(0,0,0,.16), inset 4px 4px 10px rgba(255,255,255,.24);
+  transition: box-shadow .12s, transform .12s;
+}
+.btn .icon-box { font-size: 1.35em; }
+.btn:hover { transform: translateY(-1px); }
+/* กดแล้วยุบลงไปเหมือนกดดินน้ำมันจริง */
+.btn:active {
+  transform: translateY(1px);
+  box-shadow: inset 7px 7px 14px rgba(0,0,0,.24), inset -5px -5px 12px rgba(255,255,255,.20);
+}
+.btn-leaf  { background: var(--leaf); white-space: nowrap; }
+.btn-mango { background: var(--mango); width: 100%; margin-top: 10px; }
+
+.link-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: none; border: none; padding: 8px 0;
+  color: var(--leaf-dark); font-family: inherit; font-size: .84em; font-weight: 700;
+  text-decoration: underline; text-underline-offset: 4px; cursor: pointer;
+}
+.link-btn .icon-box { font-size: 1.3em; }
+
+
+/* ============================================================
+   รายการค้นหา
+   ============================================================ */
+.suggestions { margin-top: 12px; padding: 8px; max-height: 360px; overflow-y: auto; }
+.suggestion {
+  display: flex; align-items: center; gap: 14px;
+  width: 100%; padding: 13px 16px; margin-bottom: 6px;
+  border: none; border-radius: var(--r-sm);
+  background: transparent; font-family: inherit; font-size: .93em;
+  text-align: left; color: var(--ink); cursor: pointer;
+}
+.suggestion:hover { background: var(--leaf-tint); }
+.sg-icon {
+  width: 48px; height: 48px; font-size: 38px;
+  border-radius: 16px; background: var(--surface);
+  box-shadow: 5px 5px 10px var(--sh-dark), -4px -4px 9px var(--sh-light);
+}
+.sg-text { flex: 1; display: flex; flex-direction: column; line-height: 1.4; }
+.sg-text small { color: var(--ink-soft); font-size: .82em; }
+.sg-id {
+  font-size: .72em; font-weight: 700; color: var(--leaf-dark);
+  padding: 5px 12px; border-radius: 999px; background: var(--mustard-tint);
+  white-space: nowrap;
+}
+
+.note { font-size: .82em; color: var(--ink-soft); margin-top: 10px; min-height: 4px; }
+.note-ok      { color: var(--leaf-dark); font-weight: 700; }
+.note-warn    { color: var(--mango-dark); font-weight: 700; }
+.note-loading { font-style: italic; }
+
+
+/* ============================================================
+   ผลลัพธ์ราคา
+   ============================================================ */
+.result-head { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
+.result-icon {
+  width: 74px; height: 74px; font-size: 58px;
+  border-radius: 24px; background: var(--surface);
+  box-shadow: 8px 8px 16px var(--sh-dark), -6px -6px 14px var(--sh-light);
+}
+.result-head h3 { margin: 0; font-size: 1.15em; font-weight: 800; color: var(--leaf-dark); }
+.meta { display: flex; align-items: center; gap: 7px; font-size: .8em; color: var(--ink-soft); }
+.meta .icon-box { font-size: 1.2em; }
+
+.price-hero { padding: 26px 24px; text-align: center; margin-bottom: 18px; }
+.price-label { font-size: .82em; font-weight: 700; color: var(--ink-soft); }
+.price-value { font-size: 2.1em; font-weight: 800; line-height: 1.25; margin: 8px 0; color: var(--mango-dark); }
+.price-hero .meta { justify-content: center; }
+
+/* กล่องตอนยังไม่มีใครรายงานราคา */
+.empty-price { padding: 30px 24px; text-align: center; }
+.empty-price .icon-box { font-size: 3em; color: var(--mango); margin-bottom: 10px; }
+.empty-price h4 { margin: 0 0 8px; font-size: 1.05em; font-weight: 800; color: var(--leaf-dark); }
+.empty-price p  { margin: 0; font-size: .88em; color: var(--ink-soft); }
+
+/* แถบระดับความเชื่อมั่นของราคา */
+.confidence { display: flex; align-items: center; gap: 10px; justify-content: center; margin-top: 10px; font-size: .78em; font-weight: 700; }
+.conf-dots { display: flex; gap: 5px; }
+.conf-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--surface-in); box-shadow: inset 2px 2px 4px rgba(88,104,76,.3); }
+.conf-dot.on { background: var(--mustard); box-shadow: 2px 2px 5px var(--sh-dark); }
+.conf-low  { color: var(--mango-dark); }
+.conf-mid  { color: #8A6A1E; }
+.conf-high { color: var(--leaf-dark); }
+
+.total-box { padding: 18px 22px; font-size: .95em; margin-bottom: 20px; }
+.highlight { color: var(--mango-dark); font-weight: 800; }
+
+
+/* ============================================================
+   ป้ายค้าส่ง / ค้าปลีก
+   ============================================================ */
+.selltype {
+  display: inline-block; margin-left: 8px; vertical-align: 2px;
+  font-size: .62em; font-weight: 800; letter-spacing: .3px;
+  padding: 4px 12px; border-radius: 999px; white-space: nowrap;
+}
+.st-wholesale { background: var(--leaf); color: #fff; }
+.st-retail    { background: var(--mustard); color: #4A3308; }
+/* ป้ายข้อมูลจำลอง — ลายทางเฉียง ให้สะดุดตาว่าไม่ใช่ของจริง */
+.st-mock {
+  color: #fff;
+  background: repeating-linear-gradient(45deg, #9A8F7A 0 8px, #7E7361 8px 16px);
+}
+html[data-contrast="high"] .selltype { border: 2px solid var(--ink); }
+
+
+/* ============================================================
+   กล่องราคาอ้างอิงจากตลาดไท + ราคาย้อนหลัง
+   ============================================================ */
+.ref-box { padding: 20px 22px; margin-bottom: 18px; }
+/* กล่องข้อมูลจำลอง — ขอบประสีเทา ให้ต่างจากกล่องราคาจริงชัดเจน */
+.ref-box.is-mock { outline: 3px dashed #9A8F7A; outline-offset: -6px; }
+.ref-box.is-mock .ref-price,
+.ref-box.is-mock .ref-head strong { color: #6B6252; }
+.ref-head { display: flex; align-items: flex-start; gap: 13px; margin-bottom: 12px; }
+.ref-head .icon-box { font-size: 1.7em; color: var(--leaf); }
+.ref-head strong { font-size: .95em; color: var(--leaf-dark); }
+.ref-head .meta { margin-top: 3px; }
+.ref-price { font-size: 1.35em; font-weight: 800; color: var(--leaf-dark); margin-bottom: 6px; }
+
+.trend { font-size: .6em; font-weight: 800; padding: 3px 10px; border-radius: 999px; margin-left: 8px; vertical-align: 3px; }
+.trend-up   { background: var(--mango-tint); color: #A33C10; }
+.trend-down { background: var(--leaf-tint);  color: var(--leaf-dark); }
+
+.ref-hist-title { font-size: .78em; font-weight: 700; color: var(--ink-soft); margin: 14px 0 6px; }
+#refChart { width: 100%; height: 150px; display: block; }
+
+
+/* ============================================================
+   กราฟ
+   ============================================================ */
+.chart-wrap { position: relative; padding: 20px; margin-bottom: 20px; }
+.chart-title { display: flex; align-items: center; gap: 10px; font-size: .85em; font-weight: 800; color: var(--leaf-dark); margin-bottom: 12px; }
+.chart-title .icon-box { font-size: 1.4em; color: var(--leaf); }
+#chart { width: 100%; height: 220px; display: block; }
+.chart-empty { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: var(--ink-soft); font-size: .85em; }
+
+.tip { display: flex; align-items: flex-start; gap: 14px; padding: 18px 22px; font-size: .9em; color: #7A3F14; background: var(--mango-tint); border-radius: var(--r-sm); box-shadow: 8px 8px 16px var(--sh-dark), -6px -6px 14px var(--sh-light); }
+.tip .icon-box { font-size: 1.9em; color: var(--mango-dark); }
+
+
+/* ============================================================
+   รายงานราคา
+   ============================================================ */
+.help { font-size: .85em; color: var(--ink-soft); margin: -12px 0 22px; }
+
+.feedback { display: flex; align-items: flex-start; gap: 14px; margin-top: 18px; padding: 18px 22px; border-radius: var(--r-sm); font-size: .9em; }
+.feedback .icon-box { font-size: 1.7em; flex-shrink: 0; }
+.feedback-ok     { background: var(--leaf-tint);   color: var(--leaf-dark); }
+.feedback-ok .icon-box     { color: var(--leaf); }
+.feedback-warn   { background: var(--mustard-tint); color: #7A5A0E; }
+.feedback-warn .icon-box   { color: #B8860B; }
+.feedback-danger { background: var(--mango-tint);  color: #8A2B0E; }
+.feedback-danger .icon-box { color: #B03A12; }
+
+.recent { margin-top: 26px; }
+.recent-title { font-size: .85em; font-weight: 800; color: var(--leaf-dark); margin-bottom: 12px; }
+.report-list { list-style: none; margin: 0; padding: 0; }
+.report-list li {
+  display: flex; justify-content: space-between; align-items: center; gap: 14px;
+  padding: 14px 18px; margin-bottom: 9px; border-radius: var(--r-sm);
+  background: var(--surface-in); font-size: .9em;
+  box-shadow: inset 4px 4px 9px rgba(88,104,76,.16), inset -4px -4px 9px rgba(255,255,255,.8);
+}
+.report-list li b { color: var(--mango-dark); font-size: 1.05em; }
+.report-list small { color: var(--ink-soft); font-size: .84em; display: flex; align-items: center; gap: 8px; }
+.wbar { display: inline-block; height: 9px; border-radius: 99px; background: var(--mustard); box-shadow: 2px 2px 5px var(--sh-dark); }
+
+
+/* ============================================================
+   สินค้าที่รองรับ
+   ============================================================ */
+.cat-tabs { display: flex; gap: 10px; margin-bottom: 18px; flex-wrap: wrap; }
+.cat-tab {
+  padding: 11px 22px; border: none; border-radius: 999px;
+  background: var(--surface); color: var(--ink-soft);
+  font-family: inherit; font-size: .84em; font-weight: 700; cursor: pointer;
+  box-shadow: 6px 6px 12px var(--sh-dark), -4px -4px 10px var(--sh-light);
+}
+.cat-tab[aria-pressed="true"] {
+  background: var(--leaf); color: #fff;
+  box-shadow: inset 5px 5px 10px rgba(0,0,0,.22), inset -4px -4px 9px rgba(255,255,255,.15);
+}
+.prod-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(215px, 1fr)); gap: 12px; }
+.prod-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 13px 15px; border: none; border-radius: var(--r-sm);
+  background: var(--surface); font-family: inherit; font-size: .84em;
+  text-align: left; color: var(--ink); cursor: pointer;
+  box-shadow: 6px 6px 12px var(--sh-dark), -4px -4px 10px var(--sh-light);
+}
+.prod-item:active { box-shadow: inset 5px 5px 11px rgba(88,104,76,.22), inset -4px -4px 10px rgba(255,255,255,.8); }
+.prod-item .icon-box { width: 36px; height: 36px; font-size: 30px; }
+.prod-item span { flex: 1; line-height: 1.35; }
+.prod-item small { display: block; color: var(--ink-soft); font-size: .82em; }
+
+
+/* ============================================================
+   วิธีใช้งาน
+   ============================================================ */
+.how-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.how-item { padding: 20px 16px; border-radius: var(--r-sm); background: var(--surface); text-align: center;
+            box-shadow: 7px 7px 14px var(--sh-dark), -5px -5px 12px var(--sh-light); }
+.how-item .icon-box {
+  width: 58px; height: 58px; font-size: 36px; margin: 0 auto 12px;
+  border-radius: 20px; background: var(--leaf-tint); color: var(--leaf-dark);
+  box-shadow: inset 4px 4px 9px rgba(88,104,76,.18), inset -4px -4px 9px rgba(255,255,255,.85);
+}
+.how-num { display: inline-block; font-size: .72em; font-weight: 800; color: var(--mango-dark); }
+.how-item h4 { margin: 4px 0 6px; font-size: .92em; font-weight: 800; color: var(--leaf-dark); }
+.how-item p  { margin: 0; font-size: .8em; color: var(--ink-soft); }
+
+
+/* ============================================================
+   แหล่งข้อมูล
+   ============================================================ */
+.source-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.source-list li { padding: 17px 20px; border-radius: var(--r-sm); background: var(--surface-in);
+                  box-shadow: inset 4px 4px 9px rgba(88,104,76,.16), inset -4px -4px 9px rgba(255,255,255,.8); }
+.source-list a { color: var(--leaf-dark); font-weight: 800; font-size: .95em; text-underline-offset: 4px; }
+.source-type { display: inline-block; margin-left: 10px; font-size: .68em; font-weight: 700; color: #7A5A0E;
+               padding: 4px 12px; border-radius: 999px; background: var(--mustard-tint); vertical-align: 2px; }
+.source-note { margin: 7px 0 0; font-size: .82em; color: var(--ink-soft); }
+.src-ok   { color: var(--leaf-dark); font-weight: 800; }
+.src-dead { color: var(--mango-dark); font-weight: 800; }
+
+
+/* ============================================================
+   ท้ายเว็บ
+   ============================================================ */
+.footer {
+  margin-top: 12px; padding: 30px 0;
+  background: var(--leaf); color: rgba(244,241,230,.86);
+  border-radius: var(--r) var(--r) 0 0;
+  font-size: .8em; text-align: center;
+  box-shadow: 0 -10px 24px rgba(74,103,65,.28);
+}
+.footer strong { color: #F4F1E6; }
+.footer a { color: inherit; }
+
+
+/* ============================================================
+   แถบวิธีใช้ 3 ขั้น (บนสุด)
+   ============================================================ */
+.howto {
+  display: flex; align-items: stretch; gap: 10px;
+  margin-bottom: 4px; flex-wrap: wrap;
+}
+.howto-item {
+  flex: 1; min-width: 180px;
+  display: flex; align-items: center; gap: 13px;
+  padding: 16px 18px; border-radius: var(--r-sm);
+  background: var(--surface);
+  box-shadow: 7px 7px 14px var(--sh-dark), -5px -5px 12px var(--sh-light);
+}
+.howto-no {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 40px; height: 40px; flex-shrink: 0;
+  border-radius: 14px; background: var(--leaf); color: #fff;
+  font-weight: 800; font-size: 1.05em;
+  box-shadow: inset -3px -3px 7px rgba(0,0,0,.18), inset 3px 3px 7px rgba(255,255,255,.25);
+}
+.howto-item strong { display: block; font-size: .92em; color: var(--leaf-dark); }
+.howto-item small  { display: block; font-size: .78em; color: var(--ink-soft); line-height: 1.45; }
+.howto-arrow { align-self: center; font-size: 1.5em; color: var(--leaf); font-weight: 800; }
+@media (max-width: 760px) { .howto-arrow { display: none; } }
+
+
+/* ============================================================
+   การ์ดคำตอบ — วันที่ / ที่มา / ราคารวม
+   ============================================================ */
+.price-hero.is-empty .price-value { font-size: 1.2em; color: var(--ink-soft); }
+.price-hero.is-mock { outline: 3px dashed #9A8F7A; outline-offset: -7px; }
+
+.as-of {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  font-size: .84em; color: var(--ink); margin-top: 4px;
+}
+.as-of .icon-box { font-size: 1.2em; color: var(--leaf); }
+.as-of strong { color: var(--leaf-dark); }
+
+.price-source {
+  margin-top: 10px; font-size: .78em; color: var(--ink-soft);
+  display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap;
+}
+.st-real { background: var(--leaf); color: #fff; }
+.st-dead { background: #A33C10; color: #fff; }
+
+.total-line { font-size: .92em; color: var(--ink-soft); margin-bottom: 6px; }
+.total-big  { font-size: 1.15em; font-weight: 800; color: var(--leaf-dark); }
+.total-note { font-size: .9em; line-height: 1.6; }
+
+
+/* ============================================================
+   ปุ่มแบบเส้นขอบ (ดูราคาย้อนหลัง)
+   ============================================================ */
+.btn-outline {
+  width: 100%;
+  background: var(--surface);
+  color: var(--leaf-dark);
+  box-shadow: 7px 7px 14px var(--sh-dark), -5px -5px 12px var(--sh-light);
+}
+.btn-outline:active {
+  box-shadow: inset 6px 6px 13px rgba(88,104,76,.22), inset -5px -5px 12px rgba(255,255,255,.85);
+}
+html[data-contrast="high"] .btn-outline { border: 3px solid var(--ink); }
+
+
+/* ============================================================
+   ราคาย้อนหลัง — แสดงเป็นแถวข้อความ ไม่ใช้กราฟ
+   ============================================================ */
+.history-box { margin-top: 16px; }
+.hist-title { font-size: .86em; font-weight: 800; color: var(--leaf-dark); margin-bottom: 10px; }
+.hist-list { list-style: none; margin: 0; padding: 0; }
+.hist-list li {
+  display: flex; justify-content: space-between; align-items: center; gap: 14px;
+  padding: 14px 18px; margin-bottom: 8px; border-radius: var(--r-sm);
+  background: var(--surface-in); font-size: .88em;
+  box-shadow: inset 4px 4px 9px rgba(88,104,76,.14), inset -4px -4px 9px rgba(255,255,255,.8);
+}
+.hist-month { color: var(--ink-soft); }
+.hist-month b { color: var(--mango-dark); }
+.hist-price { font-weight: 800; color: var(--leaf-dark); white-space: nowrap; }
+.hist-list li.hist-latest {
+  background: var(--leaf-tint);
+  box-shadow: inset 4px 4px 9px rgba(88,104,76,.2), inset -4px -4px 9px rgba(255,255,255,.7);
+}
+.hist-list li.hist-latest .hist-price { color: var(--mango-dark); }
+
+
+/* ============================================================
+   จอเล็ก
+   ============================================================ */
+/* ---- เว็บแอป (PWA): แถบออฟไลน์ + ปุ่มติดตั้ง ---- */
+.offline-bar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 50;
+  padding: 12px 16px;
+  padding-bottom: calc(12px + env(safe-area-inset-bottom));
+  background: var(--mango-dark); color: #fff;
+  font-size: .82em; font-weight: 700; text-align: center;
+}
+/* ---- การ์ดติดตั้งแอป (อยู่ล่างสุดของหน้า) ---- */
+.install-card .btn-mango { margin-top: 4px; }
+.install-hint { margin-top: 14px; font-size: .84em; line-height: 1.7; }
+.install-hint .hint-ok {
+  padding: 14px 18px; border-radius: var(--r-sm);
+  background: var(--leaf-tint); color: var(--leaf-dark); font-weight: 700;
+}
+.install-hint .hint-wait {
+  padding: 14px 18px; border-radius: var(--r-sm);
+  background: var(--surface-in); color: var(--ink-soft);
+}
+.install-hint .hint-steps {
+  padding: 16px 20px; border-radius: var(--r-sm);
+  background: var(--mustard-tint); color: #6B4E0E;
+}
+.install-hint .hint-steps strong { display: block; margin-bottom: 8px; color: #5A4109; }
+.install-hint .hint-steps ol { margin: 0; padding-left: 22px; }
+.install-hint .hint-steps li { margin-bottom: 6px; }
+.install-hint .hint-steps b { color: #5A4109; }
+
+/* ---- เผื่อขอบจอมือถือที่มีติ่ง / มุมโค้ง ---- */
+.wrap { padding-left: calc(18px + env(safe-area-inset-left));
+        padding-right: calc(18px + env(safe-area-inset-right)); }
+.header { padding-top: calc(16px + env(safe-area-inset-top)); }
+.footer { padding-bottom: calc(30px + env(safe-area-inset-bottom)); }
+
+/* กันเลื่อนแนวนอนโดยไม่ตั้งใจ + ลบกรอบฟ้าตอนแตะ */
+html, body { max-width: 100%; overflow-x: hidden; }
+button, a, input, select { -webkit-tap-highlight-color: rgba(91,123,79,.18); }
+
+/* ============================================================
+   มือถือ — รองรับทุกรุ่น
+   ------------------------------------------------------------
+   หลักที่ยึด:
+     - ปุ่ม/ช่องกรอกสูงอย่างน้อย 52px นิ้วกดติดแน่
+     - ช่องกรอกตัวอักษรไม่ต่ำกว่า 16px ไม่งั้น iOS Safari ซูมเข้าเองตอนแตะ
+     - จอแคบเปลี่ยนเป็นคอลัมน์เดียว
+   ============================================================ */
+@media (max-width: 760px) {
+  .main { padding: 18px 0 40px; }
+  .card { padding: 20px 18px; }
+  .grid-2, .grid-3 { grid-template-columns: 1fr; gap: 16px; }
+  .search-row { flex-direction: column; }
+  .btn-leaf { width: 100%; }
+  .header-inner { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .a11y { width: 100%; }
+  .a11y-btn { flex: 1; justify-content: center; }
+  .price-value { font-size: 1.65em; }
+  .result-icon { width: 56px; height: 56px; font-size: 44px; }
+  .prod-grid { grid-template-columns: 1fr 1fr; }
+  .howto-item { min-width: 100%; }
+}
+
+@media (max-width: 480px) {
+  :root { --r: 24px; --r-sm: 16px; }
+  .card { padding: 18px 15px; }
+  .wrap { padding-left: calc(14px + env(safe-area-inset-left));
+          padding-right: calc(14px + env(safe-area-inset-right)); }
+  .header h1 { font-size: 1.35em; }
+  .brand .icon-box { width: 46px; height: 46px; font-size: 28px; }
+  .price-value { font-size: 1.45em; }
+  .prod-grid { grid-template-columns: 1fr; }
+  .hist-list li { flex-direction: column; align-items: flex-start; gap: 4px; }
+  .step { font-size: 1.05em; }
+  .step-no { width: 38px; height: 38px; }
+  .a11y-txt { display: none; }           /* จอแคบมาก เหลือแต่ไอคอน */
+  .a11y-btn { padding: 0 14px; }
+}
+
+/* จอเล็กมาก เช่น iPhone SE รุ่นแรก (~320px) */
+@media (max-width: 360px) {
+  .card { padding: 15px 12px; }
+  .amount-row { flex-direction: column; }
+}
+
+/* ช่องกรอกต้อง >= 16px ไม่งั้น iOS Safari ซูมเข้าเองตอนแตะ */
+@media (max-width: 900px) {
+  .input, select.input, input.input { font-size: max(16px, 1em); min-height: 52px; }
+  .btn { min-height: 56px; }
+  .suggestion, .prod-item { min-height: 60px; }
+}
+
+/* มือถือแนวนอน จอเตี้ย */
+@media (max-height: 480px) and (orientation: landscape) {
+  .main { padding-top: 12px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+}

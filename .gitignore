@@ -1,0 +1,12 @@
+# ความลับ — ห้ามขึ้น git เด็ดขาด
+.env
+.env.local
+.env.*.local
+
+# Vercel
+.vercel
+
+# ระบบ
+node_modules/
+.DS_Store
+Thumbs.db

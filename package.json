@@ -1,0 +1,13 @@
+{
+  "name": "fairfair-farm",
+  "version": "1.0.0",
+  "private": true,
+  "description": "FairFair Farm — เช็กราคากลางผัก-ผลไม้ สำหรับเกษตรกรรายย่อย",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

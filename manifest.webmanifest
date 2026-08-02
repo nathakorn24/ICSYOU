@@ -1,0 +1,35 @@
+{
+  "name": "FairFair Farm — เช็กราคากลางผัก-ผลไม้",
+  "short_name": "FairFair Farm",
+  "description": "เช็กราคามาตรฐานผัก-ผลไม้ ใช้ต่อรองกับพ่อค้าคนกลางได้ทันที ใช้งานได้แม้ไม่มีเน็ต",
+  "lang": "th",
+  "dir": "ltr",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "portrait-primary",
+  "background_color": "#E8E4D8",
+  "theme_color": "#5B7B4F",
+  "categories": ["business", "food", "utilities"],
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
