@@ -161,4 +161,5 @@ https://dataapi.moc.go.th/gis-products?sell_type=wholesale
 แล้วกรองหมวด `ผักสด` / `ผลไม้` (API ตอบช้า 40-60 วินาที เป็นเรื่องปกติของฝั่งกระทรวง)
 #   I C S Y O U  
  #   I C S Y O U  
+ #   I C S Y O U  
  
